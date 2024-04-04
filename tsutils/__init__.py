@@ -1,6 +1,12 @@
 '''Time series utilities.'''
 
-from .data import SlidingWindows
+from . import data
+from . import layers
+from . import models
+from . import training
+
+
+from .data import make_sine_cosine, SlidingWindows
 
 from .layers import CausalConv1d
 

@@ -55,13 +55,12 @@ class LSTM(nn.Module):
     def forecast(self, seq, steps=1):
         '''Forecast based on recursive predictions.'''
 
+        pred = seq
+
         preds = []
-
-        pred = self(seq, reset=True)
-        preds.append(pred)
-
-        for _ in range(steps - 1):
-            pred = self(pred, reset=False)
+        for idx in range(steps):
+            reset = idx == 0
+            pred = self(pred, reset=reset)
             preds.append(pred)
 
         preds = torch.cat(preds, dim=1)
