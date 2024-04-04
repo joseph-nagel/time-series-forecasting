@@ -18,7 +18,7 @@ def make_sine_cosine(num_steps,
     noisy_sine = sine + np.random.normal(loc=0, scale=noise_level, size=num_steps)
     noisy_cosine = cosine + np.random.normal(loc=0, scale=noise_level, size=num_steps)
 
-    data = np.column_stack((noisy_sine, noisy_cosine)).astype('float32')
+    data = np.column_stack((noisy_sine, noisy_cosine)).astype('float32') # (time steps, 2)
 
     if val_size is None:
         return data
@@ -27,7 +27,7 @@ def make_sine_cosine(num_steps,
         train_data, val_data = train_test_split(
             data,
             test_size=val_size,
-            shuffle=False # turn of shuffling for time series data
+            shuffle=False # turn off shuffling for time series data
         )
 
         return train_data, val_data

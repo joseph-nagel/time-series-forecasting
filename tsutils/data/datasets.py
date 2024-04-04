@@ -38,7 +38,9 @@ class SlidingWindows(Dataset):
 
         data = torch.as_tensor(data, dtype=torch.float32)
 
-        if data.ndim == 2:
+        if data.ndim == 1:
+            self.data = data.unsqueeze(1) # (time steps, 1)
+        elif data.ndim == 2:
             self.data = data # (time steps, features)
         else:
             raise ValueError('Data array needs two dimensions')

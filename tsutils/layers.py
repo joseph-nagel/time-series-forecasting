@@ -3,8 +3,26 @@
 import torch.nn as nn
 
 
-class CausalConv1d(nn.Module):
-    '''Causal convolution in 1D.'''
+class CausalConv(nn.Module):
+    '''
+    Causal convolution.
+
+    Parameters
+    ----------
+    in_channels : int
+        Number of input channels.
+    out_channels : int
+        Number of output channels.
+    kernel_size : int
+        Convolutional kernel size.
+    stride : int, optional
+        Stride parameter.
+    dilation : int, optional
+        Dilation parameter.
+    bias : bool, optional
+        Switches bias on/off.
+
+    '''
 
     def __init__(self,
                  in_channels,

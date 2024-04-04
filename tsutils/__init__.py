@@ -8,7 +8,7 @@ from . import training
 
 from .data import make_sine_cosine, SlidingWindows
 
-from .layers import CausalConv1d
+from .layers import CausalConv
 
 from .models import LSTM, TCN
 

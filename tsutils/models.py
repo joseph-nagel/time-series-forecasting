@@ -5,7 +5,19 @@ import torch.nn as nn
 
 
 class LSTM(nn.Module):
-    '''Simple LSTM module.'''
+    '''
+    Simple LSTM module.
+
+    Parameters
+    ----------
+    input_size : int
+        Number of input features.
+    hidden_size : int
+        Size of the hidden state.
+    num_layers : int, optional
+        Number of LSTM layers.
+
+    '''
 
     def __init__(self,
                  input_size,
@@ -69,7 +81,15 @@ class LSTM(nn.Module):
 
 
 class TCN(nn.Module):
-    '''TCN wrapper module.'''
+    '''
+    TCN wrapper module.
+
+    Parameters
+    ----------
+    model : PyTorch module
+        TCN forecasting model.
+
+    '''
 
     def __init__(self, model):
         super().__init__()
