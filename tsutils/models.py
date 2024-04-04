@@ -7,7 +7,11 @@ import torch.nn as nn
 class LSTM(nn.Module):
     '''Simple LSTM module.'''
 
-    def __init__(self, input_size, hidden_size, num_layers=1):
+    def __init__(self,
+                 input_size,
+                 hidden_size,
+                 num_layers=1):
+
         super().__init__()
 
         self.input_size = input_size
@@ -29,6 +33,7 @@ class LSTM(nn.Module):
         return sum([p.numel() for p in self.parameters() if p.requires_grad])
 
     def forward(self, x, reset=True):
+
         batch_size = x.shape[0]
 
         # hidden state initialization
@@ -49,13 +54,18 @@ class LSTM(nn.Module):
 
     def forecast(self, seq, steps=1):
         '''Forecast based on recursive predictions.'''
+
         preds = []
+
         pred = self(seq, reset=True)
         preds.append(pred)
-        for idx in range(steps-1):
+
+        for _ in range(steps - 1):
             pred = self(pred, reset=False)
             preds.append(pred)
+
         preds = torch.cat(preds, dim=1)
+
         return preds
 
 
@@ -76,8 +86,9 @@ class TCN(nn.Module):
 
     def forecast(self, seq, steps=1):
         '''Forecast based on iteratively appended sequences.'''
+
         preds = []
-        for idx in range(steps):
+        for _ in range(steps):
             pred = self(seq)
 
             preds.append(pred[...,-1:])
@@ -86,5 +97,6 @@ class TCN(nn.Module):
                 seq = torch.cat((seq[...,1:], pred[...,-1:]), dim=-1)
 
         preds = torch.cat(preds, dim=-1)
+
         return preds
 

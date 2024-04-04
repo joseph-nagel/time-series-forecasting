@@ -35,6 +35,7 @@ class SlidingWindows(Dataset):
         return len(self.data) - self.window_size + 1 - self.next_steps
 
     def __getitem__(self, idx):
+
         x = self.data[idx:idx+self.window_size]
 
         if self.mode == 'next':

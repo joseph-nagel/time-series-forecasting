@@ -2,5 +2,3 @@
 
 This repository contains simple time series forecasting examples.
 
-
-

@@ -6,6 +6,7 @@ import torch
 @torch.no_grad()
 def test_loss(model, criterion, data_loader):
     '''Compute loss.'''
+
     model.eval()
 
     losses = []
