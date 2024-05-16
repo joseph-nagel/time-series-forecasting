@@ -4,7 +4,24 @@ import torch
 import torch.nn as nn
 
 
-class LSTM(nn.Module):
+class ForecastingModel(nn.Module):
+    '''Forecasting model base class.'''
+
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def num_weights(self):
+        '''Get number of weights.'''
+        return sum([p.numel() for p in self.parameters()])
+
+    @property
+    def num_trainable(self):
+        '''Get number of trainable weights.'''
+        return sum([p.numel() for p in self.parameters() if p.requires_grad])
+
+
+class LSTM(ForecastingModel):
     '''
     Simple LSTM module.
 
@@ -14,7 +31,7 @@ class LSTM(nn.Module):
         Number of input features.
     hidden_size : int
         Size of the hidden state.
-    num_layers : int, optional
+    num_layers : int
         Number of LSTM layers.
 
     '''
@@ -38,11 +55,6 @@ class LSTM(nn.Module):
         )
 
         self.fc = nn.Linear(hidden_size, input_size)
-
-    @property
-    def num_trainable(self):
-        '''Get number of trainable weights.'''
-        return sum([p.numel() for p in self.parameters() if p.requires_grad])
 
     def forward(self, x, reset=True):
 
@@ -80,7 +92,7 @@ class LSTM(nn.Module):
         return preds
 
 
-class TCN(nn.Module):
+class TCN(ForecastingModel):
     '''
     TCN wrapper module.
 
@@ -94,11 +106,6 @@ class TCN(nn.Module):
     def __init__(self, model):
         super().__init__()
         self.model = model
-
-    @property
-    def num_trainable(self):
-        '''Get number of trainable weights.'''
-        return sum([p.numel() for p in self.parameters() if p.requires_grad])
 
     def forward(self, x):
         return self.model(x)

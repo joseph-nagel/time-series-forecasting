@@ -15,11 +15,11 @@ class CausalConv(nn.Module):
         Number of output channels.
     kernel_size : int
         Convolutional kernel size.
-    stride : int, optional
+    stride : int
         Stride parameter.
-    dilation : int, optional
+    dilation : int
         Dilation parameter.
-    bias : bool, optional
+    bias : bool
         Switches bias on/off.
 
     '''
