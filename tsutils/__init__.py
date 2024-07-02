@@ -1,10 +1,11 @@
 '''Time series utilities.'''
 
-from . import data
-from . import layers
-from . import models
-from . import training
-
+from . import (
+    data,
+    layers,
+    models,
+    training
+)
 
 from .data import make_sine_cosine, SlidingWindows
 
