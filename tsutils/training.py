@@ -23,12 +23,14 @@ def test_loss(model, criterion, data_loader):
     return loss
 
 
-def train(model,
-          criterion,
-          optimizer,
-          num_epochs,
-          train_loader,
-          val_loader):
+def train(
+    model,
+    criterion,
+    optimizer,
+    num_epochs,
+    train_loader,
+    val_loader
+):
     '''Train model.'''
 
     val_loss = test_loss(model, criterion, val_loader)

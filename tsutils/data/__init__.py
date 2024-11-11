@@ -1,8 +1,6 @@
 '''Data tools.'''
 
-from . import datasets
-from . import generation
-
+from . import datasets, generation
 
 from .datasets import SlidingWindows
 

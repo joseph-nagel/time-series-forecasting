@@ -29,12 +29,14 @@ class SlidingWindows(Dataset):
 
     '''
 
-    def __init__(self,
-                 data,
-                 window_size,
-                 mode='next',
-                 next_steps=1,
-                 time_last=False):
+    def __init__(
+        self,
+        data,
+        window_size,
+        mode='next',
+        next_steps=1,
+        time_last=False
+    ):
 
         data = torch.as_tensor(data, dtype=torch.float32)
 

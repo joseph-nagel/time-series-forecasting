@@ -4,10 +4,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-def make_sine_cosine(num_steps,
-                     max_length=100.0,
-                     noise_level=0.1,
-                     val_size=None):
+def make_sine_cosine(
+    num_steps,
+    max_length=100.,
+    noise_level=0.1,
+    val_size=None
+):
     '''Create bivariate sine/cosine data.'''
 
     x_values = np.linspace(0, max_length, num_steps)

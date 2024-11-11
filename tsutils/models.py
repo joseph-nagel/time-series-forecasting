@@ -36,10 +36,12 @@ class LSTM(ForecastingModel):
 
     '''
 
-    def __init__(self,
-                 input_size,
-                 hidden_size,
-                 num_layers=1):
+    def __init__(
+        self,
+        input_size,
+        hidden_size,
+        num_layers=1
+    ):
 
         super().__init__()
 
@@ -114,6 +116,7 @@ class TCN(ForecastingModel):
         '''Forecast based on iteratively appended sequences.'''
 
         preds = []
+
         for _ in range(steps):
             pred = self(seq)
 
