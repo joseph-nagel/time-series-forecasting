@@ -5,6 +5,7 @@ A synthetic experiment is conducted where both a **long short-term memory** (LST
 a **temporal convolutional network** (TCN) model are trained on the same toy dataset.
 They establish powerful mechanisms for sequence modeling.
 
+
 ## Notebooks
 
 - [LSTM](notebooks/lstm.ipynb)
