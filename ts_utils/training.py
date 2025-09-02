@@ -54,4 +54,3 @@ def train(
             val_loss = test_loss(model, criterion, val_loader)
             print('Epoch: {:d}, batch loss: {:.2e}, val. loss: {:.2e}'. \
                   format(epoch_idx + 1, loss.detach().item(), val_loss))
-

@@ -79,4 +79,3 @@ class SlidingWindows(Dataset):
             y = y.T
 
         return x, y
-

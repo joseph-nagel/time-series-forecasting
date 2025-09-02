@@ -56,4 +56,3 @@ class CausalConv(nn.Module):
         x = nn.functional.pad(x, self.pad)
         x = self.conv(x)
         return x
-

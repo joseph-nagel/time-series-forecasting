@@ -9,6 +9,4 @@ They establish powerful mechanisms for sequence modeling.
 ## Notebooks
 
 - [LSTM](notebooks/lstm.ipynb)
-
 - [TCN](notebooks/tcn.ipynb)
-

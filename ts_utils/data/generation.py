@@ -33,4 +33,3 @@ def make_sine_cosine(
         )
 
         return train_data, val_data
-

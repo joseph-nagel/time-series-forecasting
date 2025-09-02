@@ -128,4 +128,3 @@ class TCN(ForecastingModel):
         preds = torch.cat(preds, dim=-1)
 
         return preds
-
