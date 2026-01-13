@@ -8,5 +8,6 @@ They establish powerful mechanisms for sequence modeling.
 
 ## Notebooks
 
+- [ARMA](notebooks/arma.ipynb)
 - [LSTM](notebooks/lstm.ipynb)
 - [TCN](notebooks/tcn.ipynb)

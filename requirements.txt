@@ -1,4 +1,7 @@
 numpy
+pandas
 torch
+scikit-learn
+statsmodels
 matplotlib
 notebook
