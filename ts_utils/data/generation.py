@@ -5,10 +5,10 @@ from sklearn.model_selection import train_test_split
 
 
 def make_sine_cosine(
-    num_steps,
-    max_length=100.,
-    noise_level=0.1,
-    val_size=None
+    num_steps: int,
+    max_length: float = 100.,
+    noise_level: float = 0.1,
+    val_size: float | int | None = None
 ):
     '''Create bivariate sine/cosine data.'''
 
@@ -20,7 +20,7 @@ def make_sine_cosine(
     noisy_sine = sine + np.random.normal(loc=0, scale=noise_level, size=num_steps)
     noisy_cosine = cosine + np.random.normal(loc=0, scale=noise_level, size=num_steps)
 
-    data = np.column_stack((noisy_sine, noisy_cosine)).astype('float32') # (time steps, 2)
+    data = np.column_stack((noisy_sine, noisy_cosine)).astype('float32')  # (time steps, 2)
 
     if val_size is None:
         return data
@@ -29,7 +29,7 @@ def make_sine_cosine(
         train_data, val_data = train_test_split(
             data,
             test_size=val_size,
-            shuffle=False # turn off shuffling for time series data
+            shuffle=False  # turn off shuffling for time series data
         )
 
         return train_data, val_data

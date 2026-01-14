@@ -11,12 +11,12 @@ class ForecastingModel(nn.Module):
         super().__init__()
 
     @property
-    def num_weights(self):
+    def num_weights(self) -> int:
         '''Get number of weights.'''
         return sum([p.numel() for p in self.parameters()])
 
     @property
-    def num_trainable(self):
+    def num_trainable(self) -> int:
         '''Get number of trainable weights.'''
         return sum([p.numel() for p in self.parameters() if p.requires_grad])
 
@@ -38,9 +38,9 @@ class LSTM(ForecastingModel):
 
     def __init__(
         self,
-        input_size,
-        hidden_size,
-        num_layers=1
+        input_size: int,
+        hidden_size: int,
+        num_layers: int = 1
     ):
 
         super().__init__()
@@ -58,7 +58,7 @@ class LSTM(ForecastingModel):
 
         self.fc = nn.Linear(hidden_size, input_size)
 
-    def forward(self, x, reset=True):
+    def forward(self, x: torch.Tensor, reset: bool = True) -> torch.Tensor:
 
         batch_size = x.shape[0]
 
@@ -78,7 +78,7 @@ class LSTM(ForecastingModel):
 
         return out
 
-    def forecast(self, seq, steps=1):
+    def forecast(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
         '''Forecast based on recursive predictions.'''
 
         pred = seq
@@ -109,10 +109,10 @@ class TCN(ForecastingModel):
         super().__init__()
         self.model = model
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.model(x)
 
-    def forecast(self, seq, steps=1):
+    def forecast(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
         '''Forecast based on iteratively appended sequences.'''
 
         preds = []

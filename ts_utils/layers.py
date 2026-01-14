@@ -1,5 +1,6 @@
 '''Model layers.'''
 
+import torch
 import torch.nn as nn
 
 
@@ -26,12 +27,12 @@ class CausalConv(nn.Module):
 
     def __init__(
         self,
-        in_channels,
-        out_channels,
-        kernel_size,
-        stride=1,
-        dilation=1,
-        bias=True
+        in_channels: int,
+        out_channels: int,
+        kernel_size: int,
+        stride: int = 1,
+        dilation: int = 1,
+        bias: bool = True
     ):
 
         super().__init__()
@@ -52,7 +53,7 @@ class CausalConv(nn.Module):
 
         self.pad = (padding_left, padding_right)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = nn.functional.pad(x, self.pad)
         x = self.conv(x)
         return x

@@ -1,5 +1,6 @@
 '''Data tools.'''
 
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 
@@ -31,21 +32,21 @@ class SlidingWindows(Dataset):
 
     def __init__(
         self,
-        data,
-        window_size,
-        mode='next',
-        next_steps=1,
-        time_last=False
+        data: torch.Tensor | np.ndarray,
+        window_size: int,
+        mode: str = 'next',
+        next_steps: int = 1,
+        time_last: bool = False
     ):
 
         data = torch.as_tensor(data, dtype=torch.float32)
 
         if data.ndim == 1:
-            self.data = data.unsqueeze(1) # (time steps, 1)
+            self.data = data.unsqueeze(1)  # (time steps, 1)
         elif data.ndim == 2:
-            self.data = data # (time steps, features)
+            self.data = data  # (time steps, features)
         else:
-            raise ValueError('Data array needs two dimensions')
+            raise ValueError(f'Invalid array dimension: {data.ndim}')
 
         self.window_size = min(abs(window_size), len(self.data))
 
@@ -57,10 +58,10 @@ class SlidingWindows(Dataset):
         self.next_steps = abs(next_steps)
         self.time_last = time_last
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.data) - self.window_size + 1 - self.next_steps
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
 
         # get time window
         x = self.data[idx:idx+self.window_size]

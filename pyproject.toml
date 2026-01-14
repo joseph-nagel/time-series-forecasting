@@ -15,7 +15,7 @@ license = {file = "LICENSE"}
 authors = [
     {name = "Joseph Nagel", email = "JosephBNagel@gmail.com"}
 ]
-keywords = ["time series", "forecasting"]
+keywords = ["time series", "forecasting", "ARMA", "LSTM", "TCN"]
 dependencies = [
     "numpy",
     "pandas",
