@@ -21,6 +21,7 @@ dependencies = [
     "pandas",
     "torch",
     "lightning",
+    "torchmetrics",
     "scikit-learn",
     "statsmodels"
 ]

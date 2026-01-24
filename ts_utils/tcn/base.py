@@ -1,8 +1,11 @@
 '''TCN base module.'''
 
+from collections.abc import Callable
+
 import torch
 import torch.nn as nn
 from lightning.pytorch import LightningModule
+from torchmetrics import MeanSquaredError, MeanAbsoluteError
 
 
 class BaseTCN(LightningModule):
@@ -13,7 +16,7 @@ class BaseTCN(LightningModule):
     ----------
     model : nn.Module
         TCN model.
-    loss : str
+    loss : str | Callable
         Loss function.
     lr : float
         Initial learning rate.
@@ -23,24 +26,39 @@ class BaseTCN(LightningModule):
     def __init__(
         self,
         model: nn.Module,
-        loss: str = 'mse',
+        loss: str | Callable[[torch.Tensor, torch.Tensor], torch.Tensor] = 'mse',
         lr: float = 1e-04
     ):
         super().__init__()
 
+        # set model
         self.model = model
 
-        # TODO: allow for custom loss functions
-        if loss.lower() == 'mse':
-            self.criterion = nn.MSELoss(reduction='mean')
-        elif loss.lower() == 'mae':
-            self.criterion = nn.L1Loss(reduction='mean')
+        # set loss function
+        if isinstance(loss, str):
+            if loss.lower() == 'mse':
+                self.criterion = nn.MSELoss(reduction='mean')
+            elif loss.lower() == 'mae':
+                self.criterion = nn.L1Loss(reduction='mean')
+            else:
+                raise ValueError(f'Invalid loss function name: {loss}')
+        elif isinstance(loss, nn.Module) or callable(loss):
+            self.criterion = loss
         else:
-            raise ValueError(f'Invalid loss function: {loss}')
+            raise ValueError(f'Invalid loss function type: {type(loss)}')
 
+        # set initial learning rate
         self.lr = abs(lr)
 
+        # save hyperparameters
         self.save_hyperparameters(ignore=['model'])
+
+        # set additional metrics
+        self.val_mse = MeanSquaredError()
+        self.val_mae = MeanAbsoluteError()
+
+        self.test_mse = MeanSquaredError()
+        self.test_mae = MeanAbsoluteError()
 
     def num_weights(self, trainable: bool | None = None) -> int:
         '''Get number of weights.'''
@@ -94,18 +112,26 @@ class BaseTCN(LightningModule):
         batch: tuple[torch.Tensor, torch.Tensor],
         batch_idx: int
     ) -> torch.Tensor:
-        loss = self.loss(*batch)
-        self.log('val_loss', loss)
-        return loss
+        x_batch, y_batch = batch
+        y_pred = self.forecast(x_batch)
+        self.log_dict({
+            'val_loss': self.criterion(y_pred, y_batch),
+            'val_mse': self.val_mse(y_pred, y_batch),
+            'val_mae': self.val_mae(y_pred, y_batch)
+        })
 
     def test_step(
         self,
         batch: tuple[torch.Tensor, torch.Tensor],
         batch_idx: int
     ) -> torch.Tensor:
-        loss = self.loss(*batch)
-        self.log('test_loss', loss)
-        return loss
+        x_batch, y_batch = batch
+        y_pred = self.forecast(x_batch)
+        self.log_dict({
+            'test_loss': self.criterion(y_pred, y_batch),
+            'test_mse': self.test_mse(y_pred, y_batch),
+            'test_mae': self.test_mae(y_pred, y_batch)
+        })
 
     # TODO: enable LR scheduling
     def configure_optimizers(self) -> torch.optim.Optimizer:
