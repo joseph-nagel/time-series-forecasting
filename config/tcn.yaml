@@ -12,7 +12,7 @@ data:
     train_size: 0.6
     val_size: 0.2
     test_size: 0.2
-    window_size: 16
+    window_size: 24
     mode: 'next'
     next_steps: 1
     time_last: true
