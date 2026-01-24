@@ -7,6 +7,24 @@ This includes classical **autoregressive moving-average** (ARMA) models as well 
 All of these approaches leverage powerful mechanisms for sequence modeling.
 
 
+## Installation
+
+```bash
+pip install -e .
+```
+
+
+## Training
+
+```bash
+python scripts/main.py fit --config config/tcn.yaml
+```
+
+```bash
+tensorboard --logdir run/
+```
+
+
 ## Notebooks
 
 - [ARMA](notebooks/arma.ipynb)

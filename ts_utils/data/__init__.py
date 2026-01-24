@@ -1,5 +1,6 @@
 '''Data tools.'''
 
-from . import datasets, generation
-from .datasets import SlidingWindows
-from .generation import make_sine_cosine
+from . import datamodules, datasets, utils
+from .datamodules import SineCosineDataModule
+from .datasets import SlidingWindowsDataset
+from .utils import make_sine_cosine

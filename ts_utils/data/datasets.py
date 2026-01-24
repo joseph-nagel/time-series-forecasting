@@ -5,7 +5,7 @@ import torch
 from torch.utils.data import Dataset
 
 
-class SlidingWindows(Dataset):
+class SlidingWindowsDataset(Dataset):
     '''
     Sliding windows dataset.
 
@@ -36,7 +36,7 @@ class SlidingWindows(Dataset):
         window_size: int,
         mode: str = 'next',
         next_steps: int = 1,
-        time_last: bool = False
+        time_last: bool = True
     ):
 
         data = torch.as_tensor(data, dtype=torch.float32)
@@ -71,7 +71,7 @@ class SlidingWindows(Dataset):
             y = self.data[idx+self.window_size:idx+self.window_size+self.next_steps]
 
         # get the shifted time series
-        elif self.mode =='shift':
+        elif self.mode == 'shift':
             y = self.data[idx+self.next_steps:idx+self.window_size+self.next_steps]
 
         # shift time axis to the end

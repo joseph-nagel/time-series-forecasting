@@ -1,27 +1,10 @@
-'''Forecasting models.'''
+'''LSTM models.'''
 
 import torch
 import torch.nn as nn
 
 
-class ForecastingModel(nn.Module):
-    '''Forecasting model base class.'''
-
-    def __init__(self):
-        super().__init__()
-
-    @property
-    def num_weights(self) -> int:
-        '''Get number of weights.'''
-        return sum([p.numel() for p in self.parameters()])
-
-    @property
-    def num_trainable(self) -> int:
-        '''Get number of trainable weights.'''
-        return sum([p.numel() for p in self.parameters() if p.requires_grad])
-
-
-class LSTM(ForecastingModel):
+class LSTM(nn.Module):
     '''
     Simple LSTM module.
 
@@ -42,7 +25,6 @@ class LSTM(ForecastingModel):
         hidden_size: int,
         num_layers: int = 1
     ):
-
         super().__init__()
 
         self.input_size = input_size
@@ -58,19 +40,33 @@ class LSTM(ForecastingModel):
 
         self.fc = nn.Linear(hidden_size, input_size)
 
+    def num_weights(self, trainable: bool | None = None) -> int:
+        '''Get number of weights.'''
+        # get total number of weights
+        if trainable is None:
+            return sum([p.numel() for p in self.parameters()])
+
+        # get number of trainable weights
+        elif trainable:
+            return sum([p.numel() for p in self.parameters() if p.requires_grad])
+
+        # get number of frozen weights
+        else:
+            return sum([p.numel() for p in self.parameters() if not p.requires_grad])
+
     def forward(self, x: torch.Tensor, reset: bool = True) -> torch.Tensor:
 
         batch_size = x.shape[0]
 
-        # hidden state initialization
+        # initialize hidden state
         if reset:
             self.h = torch.zeros(self.num_layers, batch_size, self.hidden_size)
             self.c = torch.zeros(self.num_layers, batch_size, self.hidden_size)
 
-        # LSTM prediction
+        # run LSTM
         output, (self.h, self.c) = self.lstm(x, (self.h, self.c))
 
-        # last linear layer
+        # project to output
         h = self.h[-1]
         h = h.view(batch_size, -1)
         out = self.fc(h)
@@ -80,51 +76,13 @@ class LSTM(ForecastingModel):
 
     def forecast(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
         '''Forecast based on recursive predictions.'''
-
         pred = seq
-
         preds = []
+
         for idx in range(steps):
             reset = idx == 0
             pred = self(pred, reset=reset)
             preds.append(pred)
 
         preds = torch.cat(preds, dim=1)
-
-        return preds
-
-
-class TCN(ForecastingModel):
-    '''
-    TCN wrapper module.
-
-    Parameters
-    ----------
-    model : PyTorch module
-        TCN forecasting model.
-
-    '''
-
-    def __init__(self, model):
-        super().__init__()
-        self.model = model
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.model(x)
-
-    def forecast(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
-        '''Forecast based on iteratively appended sequences.'''
-
-        preds = []
-
-        for _ in range(steps):
-            pred = self(seq)
-
-            preds.append(pred[...,-1:])
-
-            if steps > 1:
-                seq = torch.cat((seq[...,1:], pred[...,-1:]), dim=-1)
-
-        preds = torch.cat(preds, dim=-1)
-
         return preds

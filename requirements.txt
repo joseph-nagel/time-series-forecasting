@@ -1,6 +1,7 @@
 numpy
 pandas
 torch
+lightning
 scikit-learn
 statsmodels
 matplotlib
