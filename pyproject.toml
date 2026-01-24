@@ -22,12 +22,9 @@ dependencies = [
     "torch",
     "lightning",
     "torchmetrics",
+    "tensorboard",
     "scikit-learn",
-    "statsmodels"
-]
-
-[project.optional-dependencies]
-interactive = [
+    "statsmodels",
     "matplotlib",
     "notebook"
 ]

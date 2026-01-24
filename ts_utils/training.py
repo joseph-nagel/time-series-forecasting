@@ -5,7 +5,7 @@ import torch
 
 @torch.no_grad()
 def test_loss(model, criterion, data_loader):
-    '''Compute loss.'''
+    '''Compute test loss.'''
 
     model.eval()
 
@@ -31,7 +31,7 @@ def train(
     train_loader,
     val_loader
 ):
-    '''Train model.'''
+    '''Run model training.'''
 
     val_loss = test_loss(model, criterion, val_loader)
     print('Before training, val. loss: {:.2e}'.format(val_loss))

@@ -3,6 +3,7 @@ pandas
 torch
 lightning
 torchmetrics
+tensorboard
 scikit-learn
 statsmodels
 matplotlib

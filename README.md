@@ -7,6 +7,13 @@ This includes classical **autoregressive moving-average** (ARMA) models as well 
 All of these approaches leverage powerful mechanisms for sequence modeling.
 
 
+## Notebooks
+
+- [ARMA](notebooks/arma.ipynb)
+- [LSTM](notebooks/lstm.ipynb)
+- [TCN](notebooks/tcn.ipynb)
+
+
 ## Instructions
 
 - Install package:
@@ -26,10 +33,3 @@ All of these approaches leverage powerful mechanisms for sequence modeling.
     ```bash
     tensorboard --logdir run/
     ```
-
-
-## Notebooks
-
-- [ARMA](notebooks/arma.ipynb)
-- [LSTM](notebooks/lstm.ipynb)
-- [TCN](notebooks/tcn.ipynb)

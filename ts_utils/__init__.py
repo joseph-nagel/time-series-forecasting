@@ -4,7 +4,8 @@ from . import (
     data,
     lstm,
     tcn,
-    training
+    training,
+    utils
 )
 from .data import (
     make_sine_cosine,
@@ -20,3 +21,4 @@ from .tcn import (
     TCN
 )
 from .training import test_loss, train
+from .utils import freeze_weights, get_num_weights

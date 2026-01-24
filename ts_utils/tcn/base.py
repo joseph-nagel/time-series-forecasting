@@ -7,10 +7,12 @@ import torch.nn as nn
 from lightning.pytorch import LightningModule
 from torchmetrics import MeanSquaredError, MeanAbsoluteError
 
+from ..utils import get_num_weights
+
 
 class BaseTCN(LightningModule):
     '''
-    TCN wrapper module.
+    TCN base module.
 
     Parameters
     ----------
@@ -42,7 +44,7 @@ class BaseTCN(LightningModule):
                 self.criterion = nn.L1Loss(reduction='mean')
             else:
                 raise ValueError(f'Invalid loss function name: {loss}')
-        elif isinstance(loss, nn.Module) or callable(loss):
+        elif callable(loss):
             self.criterion = loss
         else:
             raise ValueError(f'Invalid loss function type: {type(loss)}')
@@ -62,17 +64,7 @@ class BaseTCN(LightningModule):
 
     def num_weights(self, trainable: bool | None = None) -> int:
         '''Get number of weights.'''
-        # get total number of weights
-        if trainable is None:
-            return sum([p.numel() for p in self.parameters()])
-
-        # get number of trainable weights
-        elif trainable:
-            return sum([p.numel() for p in self.parameters() if p.requires_grad])
-
-        # get number of frozen weights
-        else:
-            return sum([p.numel() for p in self.parameters() if not p.requires_grad])
+        return get_num_weights(self, trainable)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         '''Run the model over an input sequence.'''
@@ -80,17 +72,20 @@ class BaseTCN(LightningModule):
 
     def forecast(self, x: torch.Tensor) -> torch.Tensor:
         '''Extract the last time step as a single-step forecast.'''
-        return self(x)[..., -1:]  # (batch, channels, 1)
+        return self(x)[..., -1:]  # (batch, channels, steps=1)
 
     @torch.inference_mode()
     def forecast_iteratively(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
-        '''Forecast iteratively (by appending steps).'''
+        '''Forecast iteratively.'''
         preds = []
+
         for _ in range(steps):
-            pred = self.forecast(seq)  # (batch, channels, 1)
+            pred = self.forecast(seq)  # (batch, channels, steps=1)
             preds.append(pred)
+
             if steps > 1:
                 seq = torch.cat((seq[...,1:], pred), dim=-1)  # (batch, channels, steps)
+
         return torch.cat(preds, dim=-1)  # (batch, channels, steps)
 
     def loss(self, x: torch.Tensor, y_target: torch.Tensor) -> torch.Tensor:
@@ -114,6 +109,7 @@ class BaseTCN(LightningModule):
     ) -> torch.Tensor:
         x_batch, y_batch = batch
         y_pred = self.forecast(x_batch)
+
         self.log_dict({
             'val_loss': self.criterion(y_pred, y_batch),
             'val_mse': self.val_mse(y_pred, y_batch),
@@ -127,6 +123,7 @@ class BaseTCN(LightningModule):
     ) -> torch.Tensor:
         x_batch, y_batch = batch
         y_pred = self.forecast(x_batch)
+
         self.log_dict({
             'test_loss': self.criterion(y_pred, y_batch),
             'test_mse': self.test_mse(y_pred, y_batch),
