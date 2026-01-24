@@ -12,7 +12,7 @@ data:
     train_size: 0.6
     val_size: 0.2
     test_size: 0.2
-    window_size: 12
+    window_size: 16
     mode: 'next'
     next_steps: 1
     time_last: true
@@ -22,7 +22,7 @@ data:
 model:
   class_path: "ts_utils.TCN"
   init_args:
-    num_channels: [2, 4, 4, 2]
+    num_channels: [2, 8, 8, 2]
     kernel_size: 6
     bias: true
     weight_norm: true

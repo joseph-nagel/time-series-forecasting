@@ -1,28 +1,31 @@
 # Time series forecasting
 
-This repository contains simple time series forecasting examples.
-Synthetic experiments are conducted where different models are trained on the same toy dataset.
+This repository contains a small playground for time series forecasting.
+Simple experiments are conducted where different models are trained on the same toy dataset.
 This includes classical **autoregressive moving-average** (ARMA) models as well as more modern
 **long short-term memory** (LSTM) and **temporal convolutional network** (TCN) models.
 All of these approaches leverage powerful mechanisms for sequence modeling.
 
 
-## Installation
+## Instructions
 
-```bash
-pip install -e .
-```
-
-
-## Training
-
-```bash
-python scripts/main.py fit --config config/tcn.yaml
-```
-
-```bash
-tensorboard --logdir run/
-```
+- Install package:
+    ```bash
+    pip install -e .
+    ```
+- Train model:
+    ```bash
+    python scripts/main.py fit --config config/tcn.yaml
+    ```
+- Test model:
+    ```bash
+    python scripts/main.py test --config config/tcn.yaml \
+      --ckpt_path run/tcn/version_0/checkpoints/best.ckpt
+    ```
+- Monitor metrics:
+    ```bash
+    tensorboard --logdir run/
+    ```
 
 
 ## Notebooks
