@@ -49,7 +49,7 @@ class LSTMLightningModule(BaseForecaster):
         x: torch.Tensor,
         hx: tuple[torch.Tensor, torch.Tensor] | None = None,
         return_hidden: bool = False
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         '''Run LSTM model on input sequence.'''
         return self.model(x, hx=hx, return_hidden=return_hidden)
 
@@ -58,7 +58,7 @@ class LSTMLightningModule(BaseForecaster):
         x: torch.Tensor,
         hx: tuple[torch.Tensor, torch.Tensor] | None = None,
         return_hidden: bool = False
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         '''Forecast next time step.'''
         return self.model.forecast(x, hx=hx, return_hidden=return_hidden)
 

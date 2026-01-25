@@ -10,7 +10,7 @@ def make_sine_cosine(
     noise_level: float = 0.1,
     random_seed: int | None = None,
     val_size: float | int | None = None
-):
+) -> np.ndarray | tuple[np.ndarray, np.ndarray]:
     '''
     Create bivariate sine/cosine time series data.
 

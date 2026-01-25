@@ -32,13 +32,12 @@ class SlidingWindowsDataset(Dataset):
 
     def __init__(
         self,
-        data: torch.Tensor | np.ndarray,
+        data: np.ndarray | torch.Tensor,
         window_size: int,
         mode: str = 'next',
         next_steps: int = 1,
         time_last: bool = True
     ):
-
         data = torch.as_tensor(data, dtype=torch.float32)
 
         if data.ndim == 1:

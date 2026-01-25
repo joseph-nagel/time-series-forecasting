@@ -43,7 +43,7 @@ class LSTMModel(nn.Module):
         x: torch.Tensor,
         hx: tuple[torch.Tensor, torch.Tensor] | None = None,
         return_hidden: bool = False
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         '''Run LSTM model on input sequence.'''
 
         # run LSTM layers
@@ -62,7 +62,7 @@ class LSTMModel(nn.Module):
         x: torch.Tensor,
         hx: tuple[torch.Tensor, torch.Tensor] | None = None,
         return_hidden: bool = False
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         '''Forecast next time step.'''
 
         # run LSTM layers

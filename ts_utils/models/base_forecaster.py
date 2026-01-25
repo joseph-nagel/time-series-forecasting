@@ -78,7 +78,6 @@ class BaseForecaster(LightningModule, ABC):
         '''Forecast next time step.'''
         raise NotImplementedError()
 
-    @torch.inference_mode()
     @abstractmethod
     def forecast_iteratively(self, x: torch.Tensor, steps: int = 1) -> torch.Tensor:
         '''Forecast multiple steps iteratively.'''
@@ -102,7 +101,7 @@ class BaseForecaster(LightningModule, ABC):
         self,
         batch: tuple[torch.Tensor, torch.Tensor],
         batch_idx: int
-    ) -> torch.Tensor:
+    ):
         x_batch, y_batch = batch
         y_pred = self.forecast(x_batch)
 
@@ -116,7 +115,7 @@ class BaseForecaster(LightningModule, ABC):
         self,
         batch: tuple[torch.Tensor, torch.Tensor],
         batch_idx: int
-    ) -> torch.Tensor:
+    ):
         x_batch, y_batch = batch
         y_pred = self.forecast(x_batch)
 
