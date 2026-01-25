@@ -1,23 +1,25 @@
-'''TCN base module.'''
+'''Forecasting base module.'''
 
+from abc import ABC, abstractmethod
 from collections.abc import Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
 from lightning.pytorch import LightningModule
 from torchmetrics import MeanSquaredError, MeanAbsoluteError
 
-from ..utils import get_num_weights
+from .utils import get_num_weights
 
 
-class BaseTCN(LightningModule):
+class BaseForecaster(LightningModule, ABC):
     '''
-    TCN base module.
+    Forecasting base module.
 
     Parameters
     ----------
     model : nn.Module
-        TCN model.
+        Forecasting model.
     loss : str | Callable
         Loss function.
     lr : float
@@ -66,27 +68,21 @@ class BaseTCN(LightningModule):
         '''Get number of weights.'''
         return get_num_weights(self, trainable)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        '''Run the model over an input sequence.'''
-        return self.model(x)  # (batch, channels, steps)
+    @abstractmethod
+    def forward(self, x: torch.Tensor, **kwargs: Any) -> torch.Tensor:
+        '''Run forecast model on input sequence.'''
+        raise NotImplementedError()
 
-    def forecast(self, x: torch.Tensor) -> torch.Tensor:
-        '''Extract the last time step as a single-step forecast.'''
-        return self(x)[..., -1:]  # (batch, channels, steps=1)
+    @abstractmethod
+    def forecast(self, x: torch.Tensor, **kwargs: Any) -> torch.Tensor:
+        '''Forecast next time step.'''
+        raise NotImplementedError()
 
     @torch.inference_mode()
-    def forecast_iteratively(self, seq: torch.Tensor, steps: int = 1) -> torch.Tensor:
-        '''Forecast iteratively.'''
-        preds = []
-
-        for _ in range(steps):
-            pred = self.forecast(seq)  # (batch, channels, steps=1)
-            preds.append(pred)
-
-            if steps > 1:
-                seq = torch.cat((seq[...,1:], pred), dim=-1)  # (batch, channels, steps)
-
-        return torch.cat(preds, dim=-1)  # (batch, channels, steps)
+    @abstractmethod
+    def forecast_iteratively(self, x: torch.Tensor, steps: int = 1) -> torch.Tensor:
+        '''Forecast multiple steps iteratively.'''
+        raise NotImplementedError()
 
     def loss(self, x: torch.Tensor, y_target: torch.Tensor) -> torch.Tensor:
         '''Compute loss.'''

@@ -80,4 +80,18 @@ class TCNModel(nn.Sequential):
 
     def forecast(self, x: torch.Tensor) -> torch.Tensor:
         '''Extract the last time step as a single-step forecast.'''
-        return self(x)[..., -1:]  # (batch, channels, 1)
+        return self(x)[..., -1:]  # (batch, channels, steps=1)
+
+    @torch.inference_mode()
+    def forecast_iteratively(self, x: torch.Tensor, steps: int = 1) -> torch.Tensor:
+        '''Forecast multiple steps iteratively.'''
+        preds = []
+
+        for _ in range(steps):
+            y_pred = self.forecast(x)  # (batch, channels, steps=1)
+            preds.append(y_pred)
+
+            if steps > 1:
+                x = torch.cat((x[...,1:], y_pred), dim=-1)  # (batch, channels, steps)
+
+        return torch.cat(preds, dim=-1)  # (batch, channels, steps)

@@ -20,14 +20,21 @@ All of these approaches leverage powerful mechanisms for sequence modeling.
     ```bash
     pip install -e .
     ```
-- Train model:
+- Train models:
     ```bash
     python scripts/main.py fit --config config/tcn.yaml
     ```
-- Test model:
+    ```bash
+    python scripts/main.py fit --config config/lstm.yaml
+    ```
+- Test models:
     ```bash
     python scripts/main.py test --config config/tcn.yaml \
       --ckpt_path run/tcn/version_0/checkpoints/best.ckpt
+    ```
+    ```bash
+    python scripts/main.py test --config config/lstm.yaml \
+      --ckpt_path run/lstm/version_0/checkpoints/best.ckpt
     ```
 - Monitor metrics:
     ```bash

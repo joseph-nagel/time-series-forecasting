@@ -2,11 +2,13 @@
 
 from collections.abc import Sequence
 
-from .base import BaseTCN
+import torch
+
+from ..base_forecaster import BaseForecaster
 from .models import TCNModel
 
 
-class TCN(BaseTCN):
+class TCN(BaseForecaster):
     '''
     TCN model.
 
@@ -59,3 +61,16 @@ class TCN(BaseTCN):
         super().__init__(model=model, loss=loss, lr=lr)
 
         self.save_hyperparameters()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        '''Run TCN model on input sequence.'''
+        return self.model(x)  # (batch, channels, steps)
+
+    def forecast(self, x: torch.Tensor) -> torch.Tensor:
+        '''Forecast next time step.'''
+        return self.model.forecast(x)  # (batch, channels, steps=1)
+
+    @torch.inference_mode()
+    def forecast_iteratively(self, x: torch.Tensor, steps: int = 1) -> torch.Tensor:
+        '''Forecast multiple steps iteratively.'''
+        return self.model.forecast_iteratively(x, steps=steps)

@@ -11,7 +11,7 @@ def test_loss(model, criterion, data_loader):
 
     losses = []
     for x_batch, y_batch in data_loader:
-        y_pred = model(x_batch)
+        y_pred = model.forecast(x_batch)
         loss = criterion(y_pred, y_batch).item()
         losses.append(loss)
 
@@ -43,7 +43,7 @@ def train(
         for x_batch, y_batch in train_loader:
             optimizer.zero_grad()
 
-            y_pred = model(x_batch)
+            y_pred = model.forecast(x_batch)
             loss = criterion(y_pred, y_batch)
 
             loss.backward()
