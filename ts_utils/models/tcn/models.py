@@ -1,4 +1,4 @@
-'''TCN model.'''
+'''TCN module.'''
 
 from collections.abc import Sequence
 
@@ -10,7 +10,7 @@ from .layers import CausalConvBlock
 
 class TCNModel(nn.Sequential):
     '''
-    TCN model that stacks multiple causal convolutional layers.
+    TCN module.
 
     Parameters
     ----------

@@ -20,7 +20,7 @@ data:
     num_workers: 0
 
 model:
-  class_path: "ts_utils.LSTM"
+  class_path: "ts_utils.LSTMLightningModule"
   init_args:
     input_size: 2
     hidden_size: 5

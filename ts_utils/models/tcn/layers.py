@@ -1,4 +1,4 @@
-'''Model layers.'''
+'''TCN model layers.'''
 
 import torch
 import torch.nn as nn

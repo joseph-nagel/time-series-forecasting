@@ -7,11 +7,11 @@ from . import (
     utils
 )
 from .base_forecaster import BaseForecaster
-from .lstm import LSTM, LSTMModel
+from .lstm import LSTMModel, LSTMLightningModule
 from .tcn import (
     CausalConv,
     CausalConvBlock,
     TCNModel,
-    TCN
+    TCNLightningModule
 )
 from .utils import freeze_weights, get_num_weights

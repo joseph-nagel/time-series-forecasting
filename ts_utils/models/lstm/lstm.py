@@ -1,4 +1,4 @@
-'''LSTM model.'''
+'''LSTM Lightning module.'''
 
 import torch
 
@@ -6,9 +6,9 @@ from ..base_forecaster import BaseForecaster
 from .models import LSTMModel
 
 
-class LSTM(BaseForecaster):
+class LSTMLightningModule(BaseForecaster):
     '''
-    LSTM model.
+    LSTM Lightning module.
 
     Parameters
     ----------

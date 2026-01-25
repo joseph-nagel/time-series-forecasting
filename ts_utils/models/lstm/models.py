@@ -1,4 +1,4 @@
-'''LSTM models.'''
+'''LSTM module.'''
 
 import torch
 import torch.nn as nn
@@ -6,7 +6,7 @@ import torch.nn as nn
 
 class LSTMModel(nn.Module):
     '''
-    Simple LSTM module.
+    LSTM module.
 
     Parameters
     ----------

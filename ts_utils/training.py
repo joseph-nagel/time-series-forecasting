@@ -3,7 +3,7 @@
 import torch
 
 
-@torch.no_grad()
+@torch.inference_mode()
 def test_loss(model, criterion, data_loader):
     '''Compute test loss.'''
 

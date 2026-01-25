@@ -20,7 +20,7 @@ data:
     num_workers: 0
 
 model:
-  class_path: "ts_utils.TCN"
+  class_path: "ts_utils.TCNLightningModule"
   init_args:
     num_channels: [2, 8, 8, 2]
     kernel_size: 6

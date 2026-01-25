@@ -1,4 +1,4 @@
-'''TCN model.'''
+'''TCN Lightning module.'''
 
 from collections.abc import Sequence
 
@@ -8,9 +8,9 @@ from ..base_forecaster import BaseForecaster
 from .models import TCNModel
 
 
-class TCN(BaseForecaster):
+class TCNLightningModule(BaseForecaster):
     '''
-    TCN model.
+    TCN Lightning module.
 
     Parameters
     ----------

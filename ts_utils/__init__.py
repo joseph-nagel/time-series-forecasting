@@ -2,19 +2,19 @@
 
 from . import data, models, training
 from .data import (
-    make_sine_cosine,
+    SlidingWindowsDataset,
     SineCosineDataModule,
-    SlidingWindowsDataset
+    make_sine_cosine
 )
 from .models import (
-    freeze_weights,
-    get_num_weights,
     BaseForecaster,
-    LSTM,
-    LSTMModel,
     CausalConv,
     CausalConvBlock,
     TCNModel,
-    TCN
+    TCNLightningModule,
+    LSTMModel,
+    LSTMLightningModule,
+    freeze_weights,
+    get_num_weights
 )
 from .training import test_loss, train
